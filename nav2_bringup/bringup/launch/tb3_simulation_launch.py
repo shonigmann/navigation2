@@ -27,6 +27,19 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
+    # NOT WORKING AS EXPECTED. DOESN"T ACTUALLY SET AN ENVIRONMENT VARIABLE...
+    #SetEnvironmentVariable(name='GAZEBO_MODEL_PATH', value=[EnvironmentVariable('GAZEBO_MODEL_PATH'), os.pathsep +
+    #                                                        get_package_share_directory('turtlebot3_gazebo') +
+    #                                                        '/models'])
+    # INSTEAD JUST GOING TO SET IT DIRECTLY
+    if os.getenv('GAZEBO_MODEL_PATH') is not None:
+        os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models' + os.pathsep + \
+                                          get_package_share_directory('spaceros_gazebo') + '/models' + os.pathsep + \
+                                          os.getenv('GAZEBO_MODEL_PATH')
+    else:
+        os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models' + os.pathsep + \
+                                          get_package_share_directory('spaceros_gazebo') + '/models'
+
     # Get the launch directory
     bringup_dir = get_package_share_directory('nav2_bringup')
     launch_dir = os.path.join(bringup_dir, 'launch')
@@ -76,7 +89,7 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(bringup_dir, 'maps', 'turtlebot3_world.yaml'),
+        default_value=os.path.join(bringup_dir, 'maps', 'moon_world.yaml'),
         description='Full path to map file to load')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(

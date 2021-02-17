@@ -25,14 +25,28 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import (DeclareLaunchArgument, ExecuteProcess, GroupAction,
-                            IncludeLaunchDescription, LogInfo)
+from launch.actions import (DeclareLaunchArgument, ExecuteProcess, GroupAction, IncludeLaunchDescription, LogInfo,
+                            SetEnvironmentVariable)
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 
+from launch.substitutions import EnvironmentVariable  # to add path to Gz Models dynamically
+
 
 def generate_launch_description():
+
+    # NOT WORKING AS EXPECTED. DOESN"T ACTUALLY SET AN ENVIRONMENT VARIABLE...
+    #SetEnvironmentVariable(name='GAZEBO_MODEL_PATH', value=[EnvironmentVariable('GAZEBO_MODEL_PATH'), os.pathsep +
+    #                                                        get_package_share_directory('turtlebot3_gazebo') +
+    #                                                        '/models'])
+    # INSTEAD JUST GOING TO SET IT DIRECTLY
+    # if os.getenv('GAZEBO_MODEL_PATH') is not None:
+    #     os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models' + os.pathsep + \
+    #                                       os.getenv('GAZEBO_MODEL_PATH')
+    # else:
+    #     os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models'
+
     # Get the launch directory
     bringup_dir = get_package_share_directory('nav2_bringup')
     launch_dir = os.path.join(bringup_dir, 'launch')
@@ -179,7 +193,9 @@ def generate_launch_description():
                 msg=[robot['name'], ' using robot state pub: ', use_robot_state_pub]),
             LogInfo(
                 condition=IfCondition(log_settings),
-                msg=[robot['name'], ' autostart: ', autostart])
+                msg=[robot['name'], ' autostart: ', autostart]),
+            LogInfo(msg="GZ_MODEL_PATH: "),
+            LogInfo(msg=os.getenv('GAZEBO_MODEL_PATH'))
         ])
 
         nav_instances_cmds.append(group)

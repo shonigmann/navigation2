@@ -19,7 +19,7 @@ import launch_ros.actions
 
 
 def generate_launch_description():
-
+    
     return LaunchDescription([
         # TODO(orduno) might not be necessary to have it's own package
         launch_ros.actions.Node(
