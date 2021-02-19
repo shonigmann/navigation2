@@ -41,11 +41,11 @@ def generate_launch_description():
     #                                                        get_package_share_directory('turtlebot3_gazebo') +
     #                                                        '/models'])
     # INSTEAD JUST GOING TO SET IT DIRECTLY
-    # if os.getenv('GAZEBO_MODEL_PATH') is not None:
-    #     os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models' + os.pathsep + \
-    #                                       os.getenv('GAZEBO_MODEL_PATH')
-    # else:
-    #     os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models'
+    if os.getenv('GAZEBO_MODEL_PATH') is not None:
+        os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models' + os.pathsep + \
+                                          os.getenv('GAZEBO_MODEL_PATH')
+    else:
+        os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models'
 
     # Get the launch directory
     bringup_dir = get_package_share_directory('nav2_bringup')
@@ -194,8 +194,8 @@ def generate_launch_description():
             LogInfo(
                 condition=IfCondition(log_settings),
                 msg=[robot['name'], ' autostart: ', autostart]),
-            LogInfo(msg="GZ_MODEL_PATH: "),
-            LogInfo(msg=os.getenv('GAZEBO_MODEL_PATH'))
+            # LogInfo(msg="GZ_MODEL_PATH: "),
+            # LogInfo(msg=os.getenv('GAZEBO_MODEL_PATH'))
         ])
 
         nav_instances_cmds.append(group)

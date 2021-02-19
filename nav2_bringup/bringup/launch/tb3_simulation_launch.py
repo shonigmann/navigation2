@@ -34,11 +34,11 @@ def generate_launch_description():
     # INSTEAD JUST GOING TO SET IT DIRECTLY
     if os.getenv('GAZEBO_MODEL_PATH') is not None:
         os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models' + os.pathsep + \
-                                          get_package_share_directory('spaceros_gazebo') + '/models' + os.pathsep + \
                                           os.getenv('GAZEBO_MODEL_PATH')
+                                          #get_package_share_directory('spaceros_gazebo') + '/models' + os.pathsep + \
     else:
-        os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models' + os.pathsep + \
-                                          get_package_share_directory('spaceros_gazebo') + '/models'
+        os.environ['GAZEBO_MODEL_PATH'] = get_package_share_directory('turtlebot3_gazebo') + '/models' + os.pathsep #+ \
+                                          #get_package_share_directory('spaceros_gazebo') + '/models'
 
     # Get the launch directory
     bringup_dir = get_package_share_directory('nav2_bringup')

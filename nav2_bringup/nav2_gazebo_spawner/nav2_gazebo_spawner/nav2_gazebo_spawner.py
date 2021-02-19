@@ -101,7 +101,7 @@ def main():
     future = client.call_async(request)
 
     # TODO: DEBUGGING (tried adding timeout_sec="; might have broken things. Trying to remove altogether)
-    rclpy.spin_until_future_complete(node, future, timeout_sec=args.timeout)
+    rclpy.spin_until_future_complete(node, future)  # , timeout_sec=args.timeout)
     if future.result() is not None:
         print('response: %r' % future.result())
     else:
